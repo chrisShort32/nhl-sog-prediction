@@ -1,0 +1,42 @@
+from datetime import datetime
+import traceback
+
+from new_data import main as new_data
+from encode_categorical import main as encode_categorical
+from feat_eng_player import main as feature_engineering_player
+from team_strength_wins import main as team_strength_wins
+from team_strength_goals import main as team_strength_goals
+from misc_feats import main as misc_feats
+from predict_today import main as predict_today
+from suggest_bets import main as suggest_bets
+from prediction_results_bets import main as prediction_results_bets
+from prediction_results_all import main as prediction_results_all
+
+def ts() -> str:
+    return datetime.now().strftime("%Y%m%d_%H%M%S")
+
+def run_step(name: str, func) -> None:
+    print(f"[{ts()}] Starting step: {name}...")
+    try:
+        func()
+        print(f"[{ts()}] Completed step: {name}.")
+    except Exception:
+        print(f"[{ts()}] ERROR in step: {name}")
+        traceback.print_exc()
+        raise
+    
+    
+def main() -> None:
+    run_step("New Data Collection", new_data)
+    run_step("Categorical Encoding", encode_categorical)
+    run_step("Feature Engineering - Player", feature_engineering_player)
+    run_step("Team Strength - Wins", team_strength_wins)
+    run_step("Team Strength - Goals", team_strength_goals)
+    run_step("Miscellaneous Features", misc_feats)
+    run_step("Prediction Results - All", prediction_results_all)
+    run_step("Prediction Results - Bets", prediction_results_bets)
+    run_step("Today's Predictions", predict_today)
+    run_step("Suggest Bets", suggest_bets)
+    
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtualenv
+venv/
+.env
+
+# Big artifacts / data
+model_artifacts*/
+*.parquet
+*.csv
+*.json
+parquets/
+predictions/
+suggested_bets/
+eval_outputs/
+dashboard_data/
+data_collection/*cache*/
+**/*cache*/
+
+
+# Caches / API cache
+betting_lines_cache/
+data_collection/game_cache_2022_2026/
+data_collection/update_game_cache/
+
+# Secrets
+*.env
+*.key
+*.pem
+
+# OS / editor
+.DS_Store
+.vscode/
