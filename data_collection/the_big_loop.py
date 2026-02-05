@@ -1,5 +1,5 @@
 import json, os
-from generate_cache import get_boxscore_data, get_play_by_play_from_game_id
+from .generate_cache import get_boxscore_data, get_play_by_play_from_game_id
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 

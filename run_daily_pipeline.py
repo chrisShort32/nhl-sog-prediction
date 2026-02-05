@@ -1,5 +1,6 @@
 from datetime import datetime
 import traceback
+import time
 
 from new_data import main as new_data
 from encode_categorical import main as encode_categorical
@@ -11,15 +12,18 @@ from predict_today import main as predict_today
 from suggest_bets import main as suggest_bets
 from prediction_results_bets import main as prediction_results_bets
 from prediction_results_all import main as prediction_results_all
+from export_dashboard_parquets import main as export_dashboard_parquets
 
 def ts() -> str:
     return datetime.now().strftime("%Y%m%d_%H%M%S")
 
 def run_step(name: str, func) -> None:
     print(f"[{ts()}] Starting step: {name}...")
+    start = time.time()
     try:
         func()
-        print(f"[{ts()}] Completed step: {name}.")
+        duration = time.time() - start
+        print(f"[{ts()}] Completed step: {name} ({duration:.2f}s).")
     except Exception:
         print(f"[{ts()}] ERROR in step: {name}")
         traceback.print_exc()
@@ -37,6 +41,7 @@ def main() -> None:
     run_step("Prediction Results - Bets", prediction_results_bets)
     run_step("Today's Predictions", predict_today)
     run_step("Suggest Bets", suggest_bets)
+    run_step("Export Dashboard Parquets", export_dashboard_parquets)
     
 if __name__ == "__main__":
     main()

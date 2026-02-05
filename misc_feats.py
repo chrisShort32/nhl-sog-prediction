@@ -20,6 +20,7 @@ from datetime import datetime
 
 def main() -> None:
     ROOT = Path(__file__).resolve().parent
+    DATA = ROOT / "parquets"
     OUT = ROOT / "model_artifacts_v2"
 
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -27,7 +28,7 @@ def main() -> None:
     print(f"Starting misc features process at {ts}...")
 
     # Get the data
-    df = pd.read_parquet(OUT / "df_team_strength_goals.parquet")
+    df = pd.read_parquet(DATA / "df_team_strength_goals.parquet")
     
     df = df.sort_values(["player_id", "game_id"])
 
@@ -368,6 +369,7 @@ def main() -> None:
     
     print(f"Saving player_latest_v2.parquet at {ts}...")
     player_latest.to_parquet(OUT / "player_latest_v2.parquet", index=False)
+    player_latest.to_parquet(ROOT / "dashboard_data/latest/player_latest_v2.parquet", index=False)
     
     print(f"Saving df_model_v2.parquet at {ts}...")
     df.to_parquet(OUT / "df_model_v2.parquet", index=False)

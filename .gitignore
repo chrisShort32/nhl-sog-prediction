@@ -19,6 +19,8 @@ eval_outputs/
 dashboard_data/
 data_collection/*cache*/
 **/*cache*/
+logs/
+*.log
 
 
 # Caches / API cache

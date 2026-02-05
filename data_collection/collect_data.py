@@ -1,9 +1,9 @@
-from the_big_loop import process_all_games as fetch_game_data
-from parse_box_score import main as parse_box_scores
-from parse_play_by_play import main as parse_play_by_plays
-from get_todays_games import get_games as get_todays_games
-from get_lines import main as fetch_betting_lines
-from aggregate_lines import main as aggregate_betting_lines
+from .the_big_loop import process_all_games as fetch_game_data
+from .parse_box_score import main as parse_box_scores
+from .parse_play_by_play import main as parse_play_by_plays
+from .get_todays_games import get_games as get_todays_games
+from .get_lines import main as fetch_betting_lines
+from .aggregate_lines import main as aggregate_betting_lines
 
 def run_step(name, func):
     print(f"\n--- {name} ---")
