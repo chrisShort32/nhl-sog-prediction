@@ -13,6 +13,7 @@ from suggest_bets import main as suggest_bets
 from prediction_results_bets import main as prediction_results_bets
 from prediction_results_all import main as prediction_results_all
 from export_dashboard_parquets import main as export_dashboard_parquets
+from preprocess_data import preprocess_data as preprocess_data
 
 def ts() -> str:
     return datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -42,6 +43,7 @@ def main() -> None:
     run_step("Today's Predictions", predict_today)
     run_step("Suggest Bets", suggest_bets)
     run_step("Export Dashboard Parquets", export_dashboard_parquets)
+    run_step("Preprocess Data for Dashboard", preprocess_data)
     
 if __name__ == "__main__":
     main()

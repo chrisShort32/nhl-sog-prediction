@@ -369,7 +369,6 @@ def main() -> None:
     
     print(f"Saving player_latest_v2.parquet at {ts}...")
     player_latest.to_parquet(OUT / "player_latest_v2.parquet", index=False)
-    player_latest.to_parquet(ROOT / "dashboard_data/latest/player_latest_v2.parquet", index=False)
     
     print(f"Saving df_model_v2.parquet at {ts}...")
     df.to_parquet(OUT / "df_model_v2.parquet", index=False)
