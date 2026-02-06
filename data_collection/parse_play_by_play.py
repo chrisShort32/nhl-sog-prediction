@@ -31,6 +31,8 @@ def player_info(pbp):
         "first_name": player.get("firstName").get("default"),
         "last_name": player.get("lastName").get("default"),
         "player_name": player.get("firstName").get("default") + " " + player.get("lastName").get("default"),
+        "sweater_number": player.get("sweaterNumber"),
+        "headshot_url": player.get("headshot"),
         "shot_attempts_total": 0,
         "shot_attempts_blocked": 0,
         "shot_attempts_missed": 0,

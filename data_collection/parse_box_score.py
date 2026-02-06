@@ -36,12 +36,14 @@ def get_boxscore_data(game_id):
         
         team_id = team.get("id")
         team_abbrev = team.get("abbrev")
+        team_logo = team.get("logo")
         team_score_box = team.get("score", 0)
         team_sog = team.get("sog", 0)
         team_sog_against = op.get("sog")
         opponent_score_box = op.get("score", 0)
         opponent_id = op.get("id")
         opponent = op.get("abbrev")
+        opponent_logo = op.get("logo")
         team_win = 0
         team_otl = 0
         team_loss = 0
@@ -68,6 +70,7 @@ def get_boxscore_data(game_id):
         team_data[side] = {
             "id": team_id,
             "abbrev": team_abbrev,
+            "logo": team_logo,
             "score_box": team_score_box,
             "team_shots": team_sog,
             "team_shots_against": team_sog_against,
@@ -79,7 +82,8 @@ def get_boxscore_data(game_id):
             "opponent_otl": opponent_otl,
             "opponent_loss": opponent_loss,
             "opponent_id": opponent_id,
-            "opponent": opponent, 
+            "opponent": opponent,
+            "opponent_logo": opponent_logo
         }
 
     # --- Adjust scores if shootout ---
@@ -122,8 +126,10 @@ def get_boxscore_data(game_id):
                     "position": player.get("position"),
                     "team_id": team_id,
                     "team": team_abbrev,
+                    "team_logo": team_data[side]["logo"],
                     "opponent_id": opponent_id,
                     "opponent": opponent,
+                    "opponent_logo": team_data[side]["opponent_logo"],
                     "is_home": is_home,
                     "shots_on_goal": player.get("sog", 0),
                     "blocked_shots": player.get("blockedShots", 0),
