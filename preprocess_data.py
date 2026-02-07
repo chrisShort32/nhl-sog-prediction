@@ -24,7 +24,8 @@ def preprocess_data():
     )
     
     df = pd.concat([old_df, update_df], ignore_index=True)
-    df = df[df["season"] >= 20242025]
+    df["logo_path"] = "dashboard_data/team_logos/" + df["team"] + ".svg"
+    df = df[df["season"] > 20242025]
     
     df.to_parquet(OUT / "processed_player_data.parquet")
     print(f"Processed {len(df)} rows and saved to processed_player_data.parquet")
