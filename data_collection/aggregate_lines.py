@@ -1,5 +1,5 @@
 import csv
-import json
+import json, os
 from pathlib import Path
 from collections import defaultdict
 from typing import Any, Dict, List, Optional
@@ -8,7 +8,7 @@ from zoneinfo import ZoneInfo
 
 
 ALT_MARKET_KEY = "player_shots_on_goal_alternate"
-LOCAL_TZ = ZoneInfo("America/Chicago")
+LOCAL_TZ = ZoneInfo("America/Los_Angeles")
 
 
 TEAM_ABBR = {
@@ -226,6 +226,9 @@ def write_csv(path: str, rows: List[Dict[str, Any]]) -> None:
     if not rows:
         print(f"No rows for {path}, skipping.")
         return
+    
+    os.makedirs(os.path.dirname(path), exist_ok=True)  # add this line
+    
     fieldnames = ["player_name", "home_team", "away_team", "odds_2p", "odds_3p", "odds_4p", "odds_5p"]
     with open(path, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames)
@@ -260,7 +263,7 @@ def main() -> None:
     alt_wide = aggregate_alt_wide_mincols(alt_rows)
     print(f"Alt wide rows (today only): {len(alt_wide)}")
     today_str = datetime.now().strftime("%Y%m%d")
-    write_csv(f"betting_lines/betting_lines_{today_str}.csv", alt_wide)
+    write_csv(f"pipeline/betting_lines/betting_lines_{today_str}.csv", alt_wide)
     print(f"Wrote betting_lines_{today_str}.csv")
 
 if __name__ == "__main__":
