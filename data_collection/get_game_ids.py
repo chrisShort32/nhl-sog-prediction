@@ -1,7 +1,10 @@
 import requests
+from pathlib import Path
 from datetime import date, timedelta
 import json
 import time
+
+PROJECT_ROOT = Path(__file__).resolve().parent
 
 def get_game_ids_for_season(start_date, end_date):
     """
@@ -40,15 +43,15 @@ def get_game_ids_for_season(start_date, end_date):
 
 
 
-season_start = date(2022, 10, 1)
-season_end = date(2026, 1, 7)
+season_start = date(2026, 2, 5)
+season_end = date(2026, 2, 26)
 
 print("Fetching game IDs...")
 game_ids = get_game_ids_for_season(season_start, season_end)
 print(f"Found {len(game_ids)} regular-season games")
 
 # Save to file
-with open("nhl_game_ids_2022-2026.json", "w") as f:
-    json.dump({"2022-2026": game_ids}, f, indent=2)
+with open(PROJECT_ROOT / "nhl_game_ids_feb.json", "w") as f:
+    json.dump({"2026": game_ids}, f, indent=2)
 
-print("Saved game IDs to nhl_game_ids_2022-2026.json")
+print("Saved game IDs to nhl_game_ids_feb.json")

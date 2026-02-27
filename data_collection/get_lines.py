@@ -15,7 +15,7 @@ DATE_FORMAT = "iso"
 
 URL_BASE = "https://api.the-odds-api.com/v4/sports"
 
-CACHE_DIR = "pipeline/betting_lines_cache"
+CACHE_DIR = "betting_lines_cache"
 os.makedirs(CACHE_DIR, exist_ok=True)
 
 #Event ids can be found in the id field in the response of the /events endpoint (see /v4/sports/{sports}/events).
