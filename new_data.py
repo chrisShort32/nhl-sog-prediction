@@ -41,6 +41,8 @@ def main() -> None:
 
     # Combine dataframes
     df = pd.concat([df, update_df], ignore_index=True)
+    
+    df = df[df["season"] == 20252026].copy()
 
     # Save to parquet
     df.to_parquet(OUT / "player_data.parquet", index=False)

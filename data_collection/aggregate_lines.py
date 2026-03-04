@@ -239,6 +239,7 @@ def write_csv(path: str, rows: List[Dict[str, Any]]) -> None:
 # -------------------------
 # Main: load cache, filter today, aggregate, write
 # -------------------------
+ROOT = Path(__file__).resolve().parent.parent
 CACHE_DIR = Path("betting_lines_cache")
 
 def main() -> None:
@@ -263,7 +264,7 @@ def main() -> None:
     alt_wide = aggregate_alt_wide_mincols(alt_rows)
     print(f"Alt wide rows (today only): {len(alt_wide)}")
     today_str = datetime.now().strftime("%Y%m%d")
-    write_csv(f"betting_lines/betting_lines_{today_str}.csv", alt_wide)
+    write_csv(ROOT / f"betting_lines/betting_lines_{today_str}.csv", alt_wide)
     print(f"Wrote betting_lines_{today_str}.csv")
 
 if __name__ == "__main__":

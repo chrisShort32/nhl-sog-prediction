@@ -7,7 +7,7 @@ from datetime import datetime
 
 def main() -> None:
     ROOT = Path(__file__).resolve().parent
-    ART_DIR = Path(ROOT / "model_artifacts_v2") 
+    ART_DIR = Path(ROOT / "model_artifacts_v3") 
     SLATE_CSV = Path(ROOT / "data_collection/todays_games.csv")
 
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -17,13 +17,13 @@ def main() -> None:
         FEATURE_COLS = json.load(f)
 
     models = {
-        2: joblib.load(ART_DIR / "cal_lgbm_p_ge_2.joblib"),
-        3: joblib.load(ART_DIR / "cal_lgbm_p_ge_3.joblib"),
-        4: joblib.load(ART_DIR / "cal_lgbm_p_ge_4.joblib"),
-        5: joblib.load(ART_DIR / "cal_lgbm_p_ge_5.joblib"),
+        2: joblib.load(ART_DIR / "lgbm_calib_p_ge2.joblib"),
+        3: joblib.load(ART_DIR / "lgbm_calib_p_ge3.joblib"),
+        4: joblib.load(ART_DIR / "lgbm_calib_p_ge4.joblib"),
+        5: joblib.load(ART_DIR / "lgbm_calib_p_ge5.joblib"),
     }
 
-    player_latest = pd.read_parquet(ART_DIR / "player_latest_v2.parquet")
+    player_latest = pd.read_parquet(ART_DIR / "player_latest_v3.parquet")
 
     # --- Load slate ---
     games_raw = pd.read_csv(SLATE_CSV)
@@ -102,7 +102,7 @@ def main() -> None:
 
 
     # ----------------------------
-    # predict with v2 cal models
+    # predict with v3 cal models
     # ----------------------------
     X_tonight = tonight[FEATURE_COLS].copy()
 
