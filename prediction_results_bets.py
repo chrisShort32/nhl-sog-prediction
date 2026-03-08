@@ -32,19 +32,19 @@ def main() -> None:
     bets = pd.concat(bet_dfs, ignore_index=True)
     
     actuals = (
-        df[["game_id", "player_id", "player_name", "team", "shots_on_goal"]]
+        df[["game_id", "game_date","player_id", "player_name", "team", "shots_on_goal"]]
         .copy().rename(columns={"shots_on_goal": "actual_sog"})
     )
     
     pred_eval = predictions.merge(
-        actuals[["game_id", "player_id", "player_name", "team", "actual_sog"]],
+        actuals[["game_id","game_date", "player_id", "player_name", "team", "actual_sog"]],
         on=["game_id", "player_id", "player_name", "team"],
         how="left",
     )
     
     bet_eval = bets.copy()
     bet_eval = bet_eval.merge(
-        actuals[["game_id", "player_id", "player_name", "team", "actual_sog"]],
+        actuals[["game_id", "game_date", "player_id", "player_name", "team", "actual_sog"]],
         on=["game_id", "player_id", "player_name", "team"],
         how="left",
     )

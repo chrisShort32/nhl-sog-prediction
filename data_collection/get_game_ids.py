@@ -43,15 +43,15 @@ def get_game_ids_for_season(start_date, end_date):
 
 
 
-season_start = date(2026, 2, 5)
-season_end = date(2026, 2, 26)
+season_start = date(2026, 3, 4)
+season_end = date(2026, 3, 4)
 
 print("Fetching game IDs...")
 game_ids = get_game_ids_for_season(season_start, season_end)
 print(f"Found {len(game_ids)} regular-season games")
 
 # Save to file
-with open(PROJECT_ROOT / "nhl_game_ids_feb.json", "w") as f:
+with open(PROJECT_ROOT / "nhl_game_ids_mar.json", "w") as f:
     json.dump({"2026": game_ids}, f, indent=2)
 
-print("Saved game IDs to nhl_game_ids_feb.json")
+print("Saved game IDs to nhl_game_ids_mar.json")
