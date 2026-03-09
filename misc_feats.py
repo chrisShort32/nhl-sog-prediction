@@ -30,7 +30,7 @@ def main() -> None:
     # Get the data
     df = pd.read_parquet(DATA / "df_team_strength_goals.parquet")
     
-    df = df.sort_values(["player_id", "game_id"])
+    df = df.sort_values(["player_id", "game_date", "game_id"])
     
     # Rolling TOI + PIM
     g_plr = df.groupby("player_id")
@@ -44,10 +44,10 @@ def main() -> None:
     
     # Build team-game table
     team_game = (
-        df.groupby(["team", "season", "game_id"], as_index=False)["pim"]
-        .sum()
+        df.groupby(["team", "season", "game_id"], as_index=False)
+        .agg({"pim": "sum", "game_date": "first"})
         .rename(columns={"pim": "team_pim_game"})
-        .sort_values(["team", "game_id"])
+        .sort_values(["team", "game_date", "game_id"])
     )
 
     g_tpim = team_game.groupby(["team", "season"])["team_pim_game"]
@@ -112,7 +112,7 @@ def main() -> None:
         )
     )
 
-    team_games = team_games.sort_values(["season", "team_id", "game_date"]).copy()
+    team_games = team_games.sort_values(["season", "team_id", "game_date", "game_id"]).copy()
     
 
     # -----------------------------
@@ -130,7 +130,7 @@ def main() -> None:
     # -----------------------------
         # --- Helper to compute rolling + avg (home/away subsets) ---
     def compute_homeaway_rollings(df_sub: pd.DataFrame, cols: list) -> pd.DataFrame:
-        df_sub = df_sub.sort_values(["season", "team_id", "game_date"]).copy()
+        df_sub = df_sub.sort_values(["season", "team_id", "game_date", "game_id"]).copy()
         g = df_sub.groupby(["season", "team_id"])
 
         out = df_sub[["season", "team_id", "game_id"]].copy()
@@ -206,7 +206,7 @@ def main() -> None:
 
     WINDOWS = [3, 5, 7, 10] 
 
-    df = df.sort_values(["player_id", "season", "game_date"]).copy()
+    df = df.sort_values(["player_id", "season", "game_date", "game_id"]).copy()
 
     def add_roll_and_pre_avgs(
         df: pd.DataFrame,
@@ -295,7 +295,7 @@ def main() -> None:
     )
 
     player_latest = (
-        df.sort_values(["player_id", "game_id"])
+        df.sort_values(["player_id", "game_date", "game_id"])
             .groupby("player_id", as_index=False)
             .tail(1)
             .copy()

@@ -18,7 +18,7 @@ def main() -> None:
     # Feature Engineering: SHOTS_ON_GOAL
     
     # Ensure sorted order
-    df = df.sort_values(["player_id", "season", "game_date"]).copy()
+    df = df.sort_values(["player_id", "season", "game_date", "game_id"]).copy()
     g = df.groupby(["player_id", "season"], sort=False)["shots_on_goal"]
 
     # Feature: Rolling average - Average number of shots on goal over previous 3, 5, 7, and 10 games
@@ -50,7 +50,7 @@ def main() -> None:
     # Players average SOG per game at this point in the season
     # Number of times a player hit a threshold (2, 3, 4) of SOG
     
-    df = df.sort_values(["player_id", "season", "game_date"])
+    df = df.sort_values(["player_id", "season", "game_date", "game_id"])
     g = df.groupby(["player_id", "season"], sort=False)["shots_on_goal"]
 
     # Season to date average - excluding current game
@@ -71,7 +71,7 @@ def main() -> None:
     # Feature: Home/Away splits for the previous features
     # Rolling average and over, Season to date average and over
 
-    df = df.sort_values(["player_id", "season", "game_date"]).copy()
+    df = df.sort_values(["player_id", "season", "game_date", "game_id"]).copy()
 
     windows = [3, 5, 7, 10]
     thresholds = [2, 3, 4]
@@ -135,7 +135,7 @@ def main() -> None:
 
     ATT_COL = "shot_attempts_total"
 
-    df = df.sort_values(["player_id", "season", "game_date"]).copy()
+    df = df.sort_values(["player_id", "season", "game_date", "game_id"]).copy()
 
     windows = [3, 5, 7, 10]
     new_cols = {}
@@ -199,10 +199,10 @@ def main() -> None:
     
     WINDOWS = [3, 5, 7, 10]
     
-    df = df.sort_values(["player_id", "season", "game_date"])
+    df = df.sort_values(["player_id", "season", "game_date", "game_id"])
 
     def add_roll_and_pre_avgs(df: pd.DataFrame, stat_col: str, prefix: str, windows=WINDOWS) -> pd.DataFrame:
-        df = df.sort_values(["player_id", "season", "game_date"]).copy()
+        df = df.sort_values(["player_id", "season", "game_date", "game_id"]).copy()
         new_cols = {}
 
         # Overall group (all games)

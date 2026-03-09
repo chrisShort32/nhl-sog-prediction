@@ -37,7 +37,7 @@ def main() -> None:
     )
 
     # Sort and group for rolling stats
-    team_games = team_games.sort_values(["season", "team_id", "game_date"])
+    team_games = team_games.sort_values(["season", "team_id", "game_date", "game_id"])
     grouped = team_games.groupby(["season", "team_id"])
 
     # Rolling averages and season averages
@@ -208,11 +208,11 @@ def main() -> None:
     
     
     # Ensure clean sorting
-    team_games = team_games.sort_values(["season", "team_id", "game_date"]).copy()
+    team_games = team_games.sort_values(["season", "team_id", "game_date", "game_id"]).copy()
 
     # Helper for rolling features
     def compute_homeaway_rollings(df_, col):
-        df_ = df_.sort_values(["season", "team_id", "game_date"]).copy()
+        df_ = df_.sort_values(["season", "team_id", "game_date", "game_id"]).copy()
         g = df_.groupby(["season", "team_id"])[col]
 
         out = df_[["season", "team_id", "game_id"]].copy()
@@ -253,7 +253,7 @@ def main() -> None:
     )
 
     # --- Ensure correct ordering ---
-    team_games = team_games.sort_values(["season", "team_id", "game_date"]).copy()
+    team_games = team_games.sort_values(["season", "team_id", "game_date", "game_id"]).copy()
     
     # --- Master loop over each metric ---
     for col in ["team_goals_against", "team_goal_diff"]:
@@ -355,5 +355,3 @@ def main() -> None:
     
 if __name__ == "__main__":
     main()
-    
-

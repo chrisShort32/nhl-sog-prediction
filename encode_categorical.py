@@ -45,7 +45,7 @@ def main() -> None:
     team_games["game_date"] = pd.to_datetime(team_games["game_date"], errors="coerce")
     team_games["start_time_UTC"] = pd.to_datetime(team_games["start_time_UTC"], errors="coerce")
 
-    team_games = team_games.sort_values(["season", "team", "game_id"])
+    team_games = team_games.sort_values(["season", "team", "game_date", "game_id"])
 
     for col, out in [("team_win", "team_wins_pre"),
                     ("team_loss", "team_losses_pre"),

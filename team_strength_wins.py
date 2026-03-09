@@ -100,8 +100,8 @@ def main() -> None:
     # collapse to one record per team per game
     team_games = (
         df.groupby(["season", "team_id", "game_id"], as_index=False)
-        .agg({"game_outcome": "first", "team_games_pre": "first"})
-    ).sort_values(["season", "team_id", "game_id"])
+        .agg({"game_outcome": "first", "team_games_pre": "first", "game_date": "first"})
+    ).sort_values(["season", "team_id", "game_date", "game_id"])
     
     
     # Mark wins
@@ -211,9 +211,9 @@ def main() -> None:
 
         # Prepare base (one row per team per home/away game)
         team_games_homeaway = (
-            df.groupby(["season", "team_id", "is_home", "game_date"], as_index=False)
+            df.groupby(["season", "team_id", "is_home", "game_date", "game_id"], as_index=False)
             .agg({"game_outcome": "first"})
-            .sort_values(["season", "team_id", "is_home", "game_date"])
+            .sort_values(["season", "team_id", "is_home", "game_date", "game_id"])
         )
 
         # mark wins

@@ -92,7 +92,7 @@ def main() -> None:
     # Each player's most recent appearance determines their current team
     roster_pool = (
         season_df
-        .sort_values(["player_id", "game_id"])
+        .sort_values(["player_id", "game_date", "start_time_UTC", "game_id"])
         .groupby("player_id", as_index=False)
         .tail(1)
     )
@@ -182,13 +182,17 @@ def main() -> None:
 
     # Keep only columns that exist in df (plus is_skeleton)
     skeletons = skeletons[[c for c in df.columns if c in skeletons.columns]].copy()
+
     # Align dtypes to match original df so parquet doesn't choke on mixed types
     for col in skeletons.columns:
         if col in df.columns:
             try:
                 skeletons[col] = skeletons[col].astype(df[col].dtype)
             except (ValueError, TypeError):
-                pass
+                # Force Timestamp -> string for columns stored as strings in the original
+                if df[col].dtype == object and hasattr(skeletons[col], "dt"):
+                    skeletons[col] = skeletons[col].astype(str)
+
     combined = pd.concat([df, skeletons], ignore_index=True)
 
     n_skeletons = len(skeletons)
