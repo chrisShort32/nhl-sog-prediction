@@ -3,6 +3,7 @@ import traceback
 import time
 
 from new_data import main as new_data
+from inject_slate import main as inject_slate
 from encode_categorical import main as encode_categorical
 from feat_eng_player import main as feature_engineering_player
 from team_strength_wins import main as team_strength_wins
@@ -33,6 +34,7 @@ def run_step(name: str, func) -> None:
     
 def main() -> None:
     run_step("New Data Collection", new_data)
+    run_step("Slate Injection", inject_slate)
     run_step("Categorical Encoding", encode_categorical)
     run_step("Feature Engineering - Player", feature_engineering_player)
     run_step("Team Strength - Wins", team_strength_wins)

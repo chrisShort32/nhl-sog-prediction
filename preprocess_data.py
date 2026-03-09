@@ -4,6 +4,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 PLAYER_DATA = ROOT / "data_collection"
 OUT = ROOT / "dashboard_data/latest"
+V3_DATA = ROOT / "model_artifacts_v3/player_latest_v3.parquet"
 
 def preprocess_data():
     old_pbp_df = pd.read_csv(PLAYER_DATA / "2022-2026_pbp.csv")
@@ -29,6 +30,10 @@ def preprocess_data():
     
     df.to_parquet(OUT / "processed_player_data.parquet")
     print(f"Processed {len(df)} rows and saved to processed_player_data.parquet")
+    
+    v3_df = pd.read_parquet(V3_DATA)
+    v3_df.to_parquet(OUT / "player_latest_v3.parquet", index=False)
+    print(f"Copied {len(v3_df)} rows from player_latest_v3.parquet to player_latest_v3.parquet")
 
 if __name__ == "__main__":
     preprocess_data()
