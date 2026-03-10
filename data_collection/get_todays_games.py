@@ -22,6 +22,7 @@ def get_games():
         game_id = game.get("id")
         season = game.get("season")
         game_date = game.get("gameDate")
+        venue = game.get("venue",{}).get("default")
         away_team = game.get("awayTeam", {}).get("abbrev")
         away_team_record = game.get("awayTeam", {}).get("record")
         wins, losses, otl = away_team_record.split("-") if away_team_record else ("0", "0", "0")
@@ -34,6 +35,7 @@ def get_games():
             "game_id": game_id,
             "season": season,
             "game_date": game_date,
+            "venue": venue,
             "away_team": away_team,
             "away_wins": wins,
             "away_losses": losses,

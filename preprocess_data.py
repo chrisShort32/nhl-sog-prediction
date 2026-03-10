@@ -30,10 +30,15 @@ def preprocess_data():
     
     df.to_parquet(OUT / "processed_player_data.parquet")
     print(f"Processed {len(df)} rows and saved to processed_player_data.parquet")
+    # do we need processed_player_data anymore? doesnt v3 have all the relevant info and then some?
+    # it probably doesnt cost much to leave it just in case
     
     v3_df = pd.read_parquet(V3_DATA)
     v3_df.to_parquet(OUT / "player_latest_v3.parquet", index=False)
     print(f"Copied {len(v3_df)} rows from player_latest_v3.parquet to player_latest_v3.parquet")
 
+    todays_games = pd.read_csv(ROOT / "data_collection/todays_games.csv")
+    todays_games.to_parquet(OUT / "todays_games.parquet")
+    print(f"Copied {len(todays_games)} rows from todays_games.csv to todays_games.parquet")
 if __name__ == "__main__":
     preprocess_data()
