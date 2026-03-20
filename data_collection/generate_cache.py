@@ -22,6 +22,10 @@ def cached_request(url):
         return {}
     try:
         data = r.json()
+        
+        game_state = data.get("gameState")
+        if game_state == 'FUT':
+            return {}
     except Exception:
         print(f"Invalid JSON for {url}")
         return {}
