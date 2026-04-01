@@ -3,11 +3,10 @@ from pathlib import Path
 from typing import Iterable
 
 PROJECT_ROOT = Path(__file__).resolve().parent
-GAME_CACHE = PROJECT_ROOT / "update_game_cache"
-OUTPUT_FILE = PROJECT_ROOT / "update_pbp.csv"
 
-def get_pbp_data(game_id):
-    pbp_path = GAME_CACHE / f"{game_id}_play-by-play"
+
+def get_pbp_data(game_id, game_cache):
+    pbp_path = game_cache / f"{game_id}_play-by-play"
     pbp = json.loads(pbp_path.read_text(encoding="utf-8"))
     
     return pbp
@@ -232,17 +231,17 @@ def scrape_plays(pbp, players, goalie_games):
 GOALIE_FILE = Path("update_goalie_event_games.csv")
 
 
-def gather_pbp_game_ids() -> list[str]:
+def gather_pbp_game_ids(game_cache) -> list[str]:
     """Return sorted game_ids for which a cached play-by-play file exists."""
-    if not GAME_CACHE.exists():
-        raise FileNotFoundError(f"Cache directory not found: {GAME_CACHE.resolve()}")
+    if not game_cache.exists():
+        raise FileNotFoundError(f"Cache directory not found: {game_cache.resolve()}")
 
     # glob returns Path objects that already exist
-    game_ids = sorted({p.name.split("_")[0] for p in GAME_CACHE.glob("*_play-by-play")})
+    game_ids = sorted({p.name.split("_")[0] for p in game_cache.glob("*_play-by-play")})
     return game_ids
 
 
-def write_pbp_csv(game_ids: Iterable[str]) -> None:
+def write_pbp_csv(game_ids: Iterable[str], game_cache, output_file) -> None:
     game_ids = list(game_ids)
     print(f"Found {len(game_ids)} valid games to process.")
     print(f"Processing {len(game_ids)} games")
@@ -250,13 +249,13 @@ def write_pbp_csv(game_ids: Iterable[str]) -> None:
     header_written = False
     goalie_games: list[dict] = []
 
-    with OUTPUT_FILE.open("w", newline="", encoding="utf-8") as out_fh:
+    with output_file.open("w", newline="", encoding="utf-8") as out_fh:
         writer = None
 
         for i, gid in enumerate(game_ids, start=1):
             print(f"[{i}/{len(game_ids)}] Parsing {gid}...")
             try:
-                pbp = get_pbp_data(gid)
+                pbp = get_pbp_data(gid, game_cache)
                 roster = player_info(pbp)
                 players = scrape_plays(pbp, roster, goalie_games)
 
@@ -285,14 +284,20 @@ def write_pbp_csv(game_ids: Iterable[str]) -> None:
     else:
         print("No goalie shooting events detected.")
 
-    print(f"\nDone! Wrote combined CSV: {OUTPUT_FILE}")
+    print(f"\nDone! Wrote combined CSV: {output_file}")
 
 
-def main() -> None:
-    game_ids = gather_pbp_game_ids()
-    write_pbp_csv(game_ids)
+def main(playoffs) -> None:
+    if playoffs:
+        game_cache = PROJECT_ROOT / "playoff_game_cache"
+        output_file = PROJECT_ROOT / "playoff_pbp.csv"
+    else:
+        game_cache = PROJECT_ROOT / "update_game_cache"
+        output_file = PROJECT_ROOT / "update_pbp.csv"
+    
+    game_ids = gather_pbp_game_ids(game_cache)
+    write_pbp_csv(game_ids, game_cache, output_file)
 
 
 if __name__ == "__main__":
     main()
-

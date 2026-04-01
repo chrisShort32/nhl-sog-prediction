@@ -5,19 +5,21 @@ from .get_todays_games import get_games as get_todays_games
 from .get_lines import main as fetch_betting_lines
 from .aggregate_lines import main as aggregate_betting_lines
 
-def run_step(name, func):
+def run_step(name, func, *args):
     print(f"\n--- {name} ---")
     try:
-        func()
+        func(*args)
     except Exception as e:
         print(f"Error during {name}: {e}")
 
 def main():
-    run_step("Processing yesterdays game data", fetch_game_data)
+    playoffs = False ## flip when playoffs start
+    
+    run_step("Processing yesterdays game data", fetch_game_data, playoffs)
 
-    run_step("Parsing boxscore data", parse_box_scores)
+    run_step("Parsing boxscore data", parse_box_scores, playoffs)
 
-    run_step("Parsing play-by-play data", parse_play_by_plays)
+    run_step("Parsing play-by-play data", parse_play_by_plays, playoffs)
 
     run_step("Getting today's games", get_todays_games)
 

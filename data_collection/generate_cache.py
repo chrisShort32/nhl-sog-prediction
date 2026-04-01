@@ -3,12 +3,10 @@ import pathlib
 
 
 BASE_DIR = pathlib.Path(__file__).resolve().parent
-CACHE_DIR = BASE_DIR / "update_game_cache"
-os.makedirs(CACHE_DIR, exist_ok=True)
 
-def cached_request(url):
+def cached_request(url, game_cache):
     """Fetch JSON data with caching to local disk."""
-    fname = os.path.join(CACHE_DIR, url.split("/")[-2] + "_" + url.split("/")[-1].replace("/", "_"))
+    fname = os.path.join(game_cache, url.split("/")[-2] + "_" + url.split("/")[-1].replace("/", "_"))
     if os.path.exists(fname):
         with open(fname, "r") as f:
             try:
@@ -36,15 +34,19 @@ def cached_request(url):
 
 
 # Boxscore
-def get_boxscore_data(game_id):
+def get_boxscore_data(game_id, game_cache):
     """Fetch boxscore data and extract skater info (forwards + defense)."""
     url = f"https://api-web.nhle.com/v1/gamecenter/{game_id}/boxscore"
-    return cached_request(url)
+    os.makedirs(game_cache, exist_ok=True)
+        
+    return cached_request(url, game_cache)
 
     
 # Play-by-play
-def get_play_by_play_from_game_id(game_id):
+def get_play_by_play_from_game_id(game_id, game_cache):
     """Fetch raw play-by-play data for the game."""
-    url = f"https://api-web.nhle.com/v1/gamecenter/{game_id}/play-by-play"
-    return cached_request(url)
+    url = f"https://api-web.nhle.com/v1/gamecenter/{game_id}/play-by-play"    
+    os.makedirs(game_cache, exist_ok=True)
+        
+    return cached_request(url, game_cache)
    
