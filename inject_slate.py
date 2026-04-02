@@ -171,6 +171,7 @@ def main() -> None:
 
     # Mark as skeleton
     skeletons["is_skeleton"] = True
+    skeletons["is_playoffs"] = skeletons["game_id"].astype(str).str[4:6].eq("03").astype(int)
 
     # ------------------------------------------------------------------
     # 6. Align columns and append

@@ -4,7 +4,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 PLAYER_DATA = ROOT / "data_collection"
 OUT = ROOT / "dashboard_data/latest"
-V3_DATA = ROOT / "model_artifacts_v3/player_latest_v3.parquet"
+V4_DATA = ROOT / "model_artifacts_v4/player_latest_v4.parquet"
 
 def preprocess_data():
     old_pbp_df = pd.read_csv(PLAYER_DATA / "2022-2026_pbp.csv")
@@ -33,9 +33,9 @@ def preprocess_data():
     # do we need processed_player_data anymore? doesnt v3 have all the relevant info and then some?
     # it probably doesnt cost much to leave it just in case
     
-    v3_df = pd.read_parquet(V3_DATA)
-    v3_df.to_parquet(OUT / "player_latest_v3.parquet", index=False)
-    print(f"Copied {len(v3_df)} rows from player_latest_v3.parquet to player_latest_v3.parquet")
+    v4_df = pd.read_parquet(V4_DATA)
+    v4_df.to_parquet(OUT / "player_latest_v4.parquet", index=False)
+    print(f"Copied {len(v4_df)} rows from player_latest_v4.parquet to player_latest_v4.parquet")
 
     todays_games = pd.read_csv(ROOT / "data_collection/todays_games.csv")
     todays_games.to_parquet(OUT / "todays_games.parquet")

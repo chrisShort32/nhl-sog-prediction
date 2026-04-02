@@ -7,7 +7,7 @@ from datetime import datetime
 
 def main() -> None:
     ROOT = Path(__file__).resolve().parent
-    ART_DIR = Path(ROOT / "model_artifacts_v3") 
+    ART_DIR = Path(ROOT / "model_artifacts_v4") 
     SLATE_CSV = Path(ROOT / "data_collection/todays_games.csv")
 
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -23,7 +23,7 @@ def main() -> None:
         5: joblib.load(ART_DIR / "lgbm_calib_p_ge5.joblib"),
     }
 
-    player_latest = pd.read_parquet(ART_DIR / "player_latest_v3.parquet")
+    player_latest = pd.read_parquet(ART_DIR / "player_latest_v4.parquet")
 
     # --- Load slate ---
     games_raw = pd.read_csv(SLATE_CSV)
@@ -102,7 +102,7 @@ def main() -> None:
 
 
     # ----------------------------
-    # predict with v3 cal models
+    # predict with v4 cal models
     # ----------------------------
     X_tonight = tonight[FEATURE_COLS].copy()
 

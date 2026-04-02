@@ -16,6 +16,8 @@ def main() -> None:
     pbp_df = pd.read_csv(DATA / "2022-2026_pbp.csv")
     update_box_df = pd.read_csv(DATA / "update_box.csv")
     update_pbp_df = pd.read_csv(DATA / "update_pbp.csv")
+    playoff_box_df = pd.read_csv(DATA / "playoff_box.csv")
+    playoff_pbp_df = pd.read_csv(DATA / "playoff_pbp.csv")
 
     # Merge PBP and box
     df = pd.merge(
@@ -32,6 +34,18 @@ def main() -> None:
         on=["season", "game_id", "team_id", "player_id"],
         how="inner"
     )
+    
+    # Merge playoff box and PBP
+    # Note that while there arent any instances of ARI in the current data set --
+    # if we later decide to go further back than 2022 we may need to fix ARI in 
+    # the same mannor as we do below for regular season games
+    playoff_df = pd.merge(
+        playoff_box_df,
+        playoff_pbp_df,
+        on=["season", "game_id", "team_id", "player_id"],
+        how="inner"
+    )
+    playoff_df["is_playoffs"] = 1
 
     # Fix team change Arizona Coyotes to Utah Mammoth
     df.loc[df["team_id"] == 53, ["team_id", "team"]] = [68, "UTA"]
@@ -41,7 +55,12 @@ def main() -> None:
 
     # Combine dataframes
     df = pd.concat([df, update_df], ignore_index=True)
+    df["is_playoffs"] = 0
     
+    # Add playoffs to the df
+    df = pd.concat([df, playoff_df], ignore_index=True)
+    
+    # Uncomment this filter when not training
     df = df[df["season"] == 20252026].copy()
 
     # Save to parquet
