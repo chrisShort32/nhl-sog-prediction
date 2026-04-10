@@ -37,8 +37,12 @@ def preprocess_data():
     v4_df.to_parquet(OUT / "player_latest_v4.parquet", index=False)
     print(f"Copied {len(v4_df)} rows from player_latest_v4.parquet to player_latest_v4.parquet")
 
-    todays_games = pd.read_csv(ROOT / "data_collection/todays_games.csv")
+    try:
+        todays_games = pd.read_csv(ROOT / "data_collection/todays_games.csv")
+    except pd.errors.EmptyDataError:
+        todays_games = pd.DataFrame()
+        print("No games today — CSV is empty")
     todays_games.to_parquet(OUT / "todays_games.parquet")
-    print(f"Copied {len(todays_games)} rows from todays_games.csv to todays_games.parquet")
+
 if __name__ == "__main__":
     preprocess_data()

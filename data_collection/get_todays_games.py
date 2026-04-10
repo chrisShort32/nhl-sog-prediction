@@ -16,6 +16,19 @@ def get_games():
     games = data.get("games", [])
     if not games:
         print("No games found for today.")
+        with open(PROJECT_ROOT / "new_game_ids.json", "w") as f:
+            json.dump({"new_game_ids": games}, f, indent=2)
+            
+        header_written = False
+        with OUTPUT_FILE.open("w", newline="", encoding="utf-8") as out_fh:
+            writer = None
+            if not header_written:
+                if game_info:
+                    writer = csv.DictWriter(out_fh, fieldnames=game_info[0].keys())
+                    writer.writeheader()
+                    header_written = True
+            for info in game_info:
+                writer.writerow(info)    
         return
     
     for game in games:
@@ -47,7 +60,6 @@ def get_games():
             "start_time_UTC": start_utc
         })
         
-    # Write all player rows to CSV
     header_written = False
     with OUTPUT_FILE.open("w", newline="", encoding="utf-8") as out_fh:
         writer = None
@@ -62,7 +74,7 @@ def get_games():
     print(f"Done! Wrote today's games to CSV: {OUTPUT_FILE}")
     
     with open(PROJECT_ROOT / "new_game_ids.json", "w") as f:
-        json.dump({"new_game_ids": [game["game_id"] for game in game_info]}, f, indent=2   )
+        json.dump({"new_game_ids": [game["game_id"] for game in game_info]}, f, indent=2)
     
 if __name__ == "__main__":
     get_games()

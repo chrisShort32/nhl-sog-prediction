@@ -61,7 +61,7 @@ def main() -> None:
     df = pd.concat([df, playoff_df], ignore_index=True)
     
     # Uncomment this filter when not training
-    #df = df[df["season"] == 20252026].copy()
+    df = df[df["season"] == 20252026].copy()
 
     # Save to parquet
     df.to_parquet(OUT / "player_data.parquet", index=False)
