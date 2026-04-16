@@ -34,7 +34,7 @@ def get_boxscore_data(game_id, game_cache):
         
         team_id = team.get("id")
         team_abbrev = team.get("abbrev")
-        team_logo = team.get("logo")
+        team_logo = team.get("darkLogo")
         team_score_box = team.get("score", 0)
         team_sog = team.get("sog", 0)
         team_sog_against = op.get("sog")
