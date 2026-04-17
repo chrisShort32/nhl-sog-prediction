@@ -38,12 +38,17 @@ def main() -> None:
     # ------------------------------------------------------------------
     # 2. Load tonight's slate
     # ------------------------------------------------------------------
-    slate_raw = pd.read_csv(SLATE_CSV)
-    slate_raw["game_date"] = pd.to_datetime(slate_raw["game_date"], errors="coerce")
-    slate_raw["start_time_UTC"] = pd.to_datetime(
-        slate_raw["start_time_UTC"], utc=True, errors="coerce"
-    )
-
+    try:    
+        slate_raw = pd.read_csv(SLATE_CSV)
+        slate_raw["game_date"] = pd.to_datetime(slate_raw["game_date"], errors="coerce")
+        slate_raw["start_time_UTC"] = pd.to_datetime(
+            slate_raw["start_time_UTC"], utc=True, errors="coerce"
+        )
+    except:
+        print(f"[{ts}] No games on today's slate. Nothing to inject.")
+        df.to_parquet(OUT / "player_data.parquet", index=False)
+        return
+    
     # Skip if slate is empty
     if slate_raw.empty:
         print(f"[{ts}] No games on today's slate. Nothing to inject.")

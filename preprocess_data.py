@@ -25,13 +25,13 @@ def preprocess_data():
     )
     
     df = pd.concat([old_df, update_df], ignore_index=True)
-    df["logo_path"] = "dashboard_data/team_logos/" + df["team"] + "_dark.svg"
+    df["logo_path_dark"] = "dashboard_data/team_logos/" + df["team"] + "_dark.svg"
+    df["logo_path"] = "dashboard_data/team_logos/" + df["team"] + ".svg"
     df = df[df["season"] > 20242025]
     
     df.to_parquet(OUT / "processed_player_data.parquet")
     print(f"Processed {len(df)} rows and saved to processed_player_data.parquet")
-    # do we need processed_player_data anymore? doesnt v3 have all the relevant info and then some?
-    # it probably doesnt cost much to leave it just in case
+
     
     v4_df = pd.read_parquet(V4_DATA)
     v4_df.to_parquet(OUT / "player_latest_v4.parquet", index=False)

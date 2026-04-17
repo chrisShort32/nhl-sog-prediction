@@ -26,10 +26,14 @@ def main() -> None:
     player_latest = pd.read_parquet(ART_DIR / "player_latest_v4.parquet")
 
     # --- Load slate ---
-    games_raw = pd.read_csv(SLATE_CSV)
-    games_raw["game_date"] = pd.to_datetime(games_raw["game_date"], errors="coerce")
-    games_raw["start_time_UTC"] = pd.to_datetime(games_raw["start_time_UTC"], utc=True, errors="coerce")
-
+    try: 
+        games_raw = pd.read_csv(SLATE_CSV)
+        games_raw["game_date"] = pd.to_datetime(games_raw["game_date"], errors="coerce")
+        games_raw["start_time_UTC"] = pd.to_datetime(games_raw["start_time_UTC"], utc=True, errors="coerce")
+    except:
+        print(f"[{ts}] No games on today's slate. Nothing to predict.")
+        return
+    
     for c in ["away_wins","away_losses","away_otl","home_wins","home_losses","home_otl"]:
         games_raw[c] = pd.to_numeric(games_raw[c], errors="coerce").fillna(0).astype(int)
 

@@ -17,7 +17,11 @@ def main() -> None:
     
     today_str = datetime.now().strftime("%Y%m%d")
     pred_file = PRED_DIR/(f"preds_{today_str}.csv")
-    predictions = pd.read_csv(pred_file)
+    try:
+        predictions = pd.read_csv(pred_file)
+    except:
+        print(f"[{ts}] No games on today's slate. Nothing to suggest.")
+        return
     
     line_file = LINES_DIR/f"betting_lines_{today_str}.csv"
     betting_lines = pd.read_csv(line_file)
