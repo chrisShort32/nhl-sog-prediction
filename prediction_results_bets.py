@@ -14,7 +14,17 @@ def main() -> None:
     
     update_box_df = pd.read_csv(ROOT / "data_collection/update_box.csv")
     update_pbp_df = pd.read_csv(ROOT / "data_collection/update_pbp.csv")
-
+    
+    playoff_box_df = pd.read_csv(ROOT / "data_collection/playoff_box.csv")
+    playoff_pbp_df = pd.read_csv(ROOT / "data_collection/playoff_pbp.csv")
+    
+    playoff_df = pd.merge(
+        playoff_box_df,
+        playoff_pbp_df,
+        on=["season", "game_id", "team_id", "player_id"],
+        how="inner"
+    )
+    playoff_df["is_playoffs"] = 1
     # Merge PBP and box
     df = pd.merge(
         update_box_df,
@@ -22,6 +32,10 @@ def main() -> None:
         on=["season", "game_id", "team_id", "player_id"],
         how="inner"
     )
+    
+    df["is_playoffs"] = 0
+    
+    df = pd.concat([df, playoff_df], ignore_index=True)
     
     pred_files = list(PRED_DIR.glob("preds_*.csv"))
     pred_dfs = [pd.read_csv(f) for f in pred_files]

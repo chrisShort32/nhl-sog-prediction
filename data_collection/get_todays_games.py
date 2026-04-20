@@ -38,10 +38,21 @@ def get_games():
         venue = game.get("venue",{}).get("default")
         away_team = game.get("awayTeam", {}).get("abbrev")
         away_team_record = game.get("awayTeam", {}).get("record")
-        wins, losses, otl = away_team_record.split("-") if away_team_record else ("0", "0", "0")
+        record = away_team_record.split("-")
+        if len(record) < 3:
+            wins, losses = away_team_record.split("-") if away_team_record else ("0", "0")
+            otl = "0"
+        else:
+            wins, losses, otl = away_team_record.split("-") if away_team_record else ("0", "0", "0")
         home_team = game.get("homeTeam", {}).get("abbrev")
         home_team_record = game.get("homeTeam", {}).get("record")
-        wins_h, losses_h, otl_h = home_team_record.split("-") if home_team_record else ("0", "0", "0")
+        record = home_team_record.split("-")
+        if len(record) < 3:
+            wins_h, losses_h = home_team_record.split("-") if home_team_record else ("0", "0")
+            otl_h = "0"
+        else:
+            wins_h, losses_h, otl_h = away_team_record.split("-") if away_team_record else ("0", "0", "0")
+
         start_utc = game.get("startTimeUTC")
         
         game_info.append({

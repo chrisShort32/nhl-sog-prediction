@@ -11,28 +11,41 @@ def preprocess_data():
     old_box_df = pd.read_csv(PLAYER_DATA / "2022-2026_box.csv")
     update_pbp_df = pd.read_csv(PLAYER_DATA / "update_pbp.csv")
     update_box_df = pd.read_csv(PLAYER_DATA / "update_box.csv")
+    playoff_pbp_df = pd.read_csv(PLAYER_DATA / "playoff_pbp.csv")
+    playoff_box_df = pd.read_csv(PLAYER_DATA / "playoff_box.csv")
     
     old_df = pd.merge(
         old_box_df, old_pbp_df,
         on=["season", "game_id", "team_id", "player_id"],
         how="inner"
     )
+    old_df["is_playoffs"] = 0
     
     update_df = pd.merge(
         update_box_df, update_pbp_df,
         on=["season", "game_id", "team_id", "player_id"],
         how="inner"
     )
+    update_df["is_playoffs"] = 0
+    playoff_df = pd.merge(
+        playoff_box_df,
+        playoff_pbp_df,
+        on=["season", "game_id", "team_id", "player_id"],
+        how="inner"
+    )
+    playoff_df["is_playoffs"] = 1
     
-    df = pd.concat([old_df, update_df], ignore_index=True)
+    df = pd.concat([old_df, update_df, playoff_df], ignore_index=True)
     df["logo_path_dark"] = "dashboard_data/team_logos/" + df["team"] + "_dark.svg"
     df["logo_path"] = "dashboard_data/team_logos/" + df["team"] + ".svg"
     df = df[df["season"] > 20242025]
     
+    
+    
     df.to_parquet(OUT / "processed_player_data.parquet")
     print(f"Processed {len(df)} rows and saved to processed_player_data.parquet")
 
-    
+
     v4_df = pd.read_parquet(V4_DATA)
     v4_df.to_parquet(OUT / "player_latest_v4.parquet", index=False)
     print(f"Copied {len(v4_df)} rows from player_latest_v4.parquet to player_latest_v4.parquet")

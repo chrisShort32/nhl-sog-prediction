@@ -13,7 +13,7 @@ def run_step(name, func, *args):
         print(f"Error during {name}: {e}")
 
 def main():
-    playoffs = False ## flip when playoffs start
+    playoffs = True ## flip when playoffs start
     
     run_step("Processing yesterdays game data", fetch_game_data, playoffs)
 
