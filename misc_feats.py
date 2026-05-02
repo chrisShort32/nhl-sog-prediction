@@ -21,7 +21,7 @@ from datetime import datetime
 def main() -> None:
     ROOT = Path(__file__).resolve().parent
     DATA = ROOT / "parquets"
-    OUT = ROOT / "model_artifacts_v4"
+    OUT = ROOT / "model_artifacts_v5"
 
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")
     
@@ -303,11 +303,11 @@ def main() -> None:
 
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")
     
-    print(f"Saving player_latest_v4.parquet at {ts}...")
-    player_latest.to_parquet(OUT / "player_latest_v4.parquet", index=False)
+    print(f"Saving player_latest_v5.parquet at {ts}...")
+    player_latest.to_parquet(OUT / "player_latest_v5.parquet", index=False)
     
-    print(f"Saving df_model_v4.parquet at {ts}...")
-    df.to_parquet(OUT / "df_model_v4.parquet", index=False)
+    print(f"Saving df_model_v5.parquet at {ts}...")
+    df.to_parquet(OUT / "df_model_v5.parquet", index=False)
     
 if __name__ == "__main__":
     main()

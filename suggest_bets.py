@@ -84,20 +84,6 @@ def main() -> None:
     merged["edge_4p"] = merged["p_ge4"] - merged["imp_4p"]
     merged["edge_5p"] = merged["p_ge5"] - merged["imp_5p"]
 
-    merged["diff_p2p3"] = (merged["p_ge2"] - merged["p_ge3"]).clip(lower=0)
-    merged["diff_p3p4"] = (merged["p_ge3"] - merged["p_ge4"]).clip(lower=0)
-
-    eps = 1e-9
-    p2 = merged["p_ge2"].clip(eps,1)
-    p3 = merged["p_ge3"].clip(eps,1)
-    p4 = merged["p_ge4"].clip(eps,1)
-
-    merged["r_3_2"] = p3/p2
-    merged["r_4_3"] = p4/p3
-
-    merged["lr_3_2"] = np.log(p3/p2)
-    merged["lr_4_3"] = np.log(p4/p3)
-    
     RULES = {
         # --- global ---
         "vig": 0.06,
@@ -153,7 +139,6 @@ def main() -> None:
             edge_col: "edge_over",
         }, inplace=True)
 
-        tmp["market"] = m
         tmp["threshold"] = int(k)
 
         # Model under prob
@@ -205,7 +190,7 @@ def main() -> None:
     markets_long["bet_type"] = np.select(
         [is_under, is_value, is_single, is_parlay, is_avoid],
         ["under", "value", "single", "parlay", "avoid"],
-        default="lean"
+        default="avoid"
     )
 
     markets_long["side"] = np.where(markets_long["bet_type"] == "under", "under", "over")
@@ -241,12 +226,6 @@ def main() -> None:
         "game_id",
         "player_id",
         "player_name",
-        "diff_p2p3",
-        "diff_p3p4",
-        "r_3_2",
-        "r_4_3",
-        "lr_3_2",
-        "lr_4_3",
     ]
 
     markets_long = markets_long.merge(
@@ -259,7 +238,7 @@ def main() -> None:
 
     # optional: sort for readability
     final = final.sort_values(
-        ["game_id", "bet_type", "market", "bet_edge", "bet_p"],
+        ["game_id", "bet_type", "threshold", "bet_edge", "bet_p"],
         ascending=[True, True, True, False, False]
     ).reset_index(drop=True)
     

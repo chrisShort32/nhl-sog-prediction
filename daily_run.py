@@ -12,7 +12,7 @@ def main() -> None:
 
     try:
         print(f"[{ts()}] Running data collection...", flush=True)
-        collect_data()
+        #collect_data()
         print(f"[{ts()}] Data collection complete.", flush=True)
 
         print(f"[{ts()}] Running daily pipeline...", flush=True)
