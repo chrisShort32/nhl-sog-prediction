@@ -40,6 +40,11 @@ def preprocess_data():
     df["logo_path"] = "dashboard_data/team_logos/" + df["team"] + ".svg"
     df = df[df["season"] > 20242025]
     
+    ## Fix team change Arizona Coyotes to Utah Mammoth
+    df.loc[df["team_id"] == 53, ["team_id", "team"]] = [68, "UTA"]
+    df.loc[df["opponent_id"] == 53, ["opponent_id", "opponent"]] = [68, "UTA"]
+    df.loc[df["team_id"] == 59, ["team_id", "team"]] = [68, "UTA"]
+    df.loc[df["opponent_id"] == 59, ["opponent_id", "opponent"]] = [68, "UTA"]
     
     
     df.to_parquet(OUT / "processed_player_data.parquet")
