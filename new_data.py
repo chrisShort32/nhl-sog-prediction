@@ -18,6 +18,8 @@ def main() -> None:
     update_pbp_df = pd.read_csv(DATA / "update_pbp.csv")
     playoff_box_df = pd.read_csv(DATA / "playoff_box.csv")
     playoff_pbp_df = pd.read_csv(DATA / "playoff_pbp.csv")
+    playoff_box_hist_df = pd.read_csv(DATA / "playoff_box_2022-2025.csv")
+    playoff_pbp_hist_df = pd.read_csv(DATA / "playoff_pbp_2022-2025.csv")
 
     # Merge PBP and box
     df = pd.merge(
@@ -46,6 +48,16 @@ def main() -> None:
         how="inner"
     )
     playoff_df["is_playoffs"] = 1
+    
+    
+    # ARI is a poverty franchise and hasnt made the playoffs in the last 5 years -- so we good
+    playoff_hist_df = pd.merge(
+        playoff_box_hist_df,
+        playoff_pbp_hist_df,
+        on=["season", "game_id", "team_id", "player_id"],
+        how="inner"
+    )
+    playoff_hist_df["is_playoffs"] = 1
 
     # Fix team change Arizona Coyotes to Utah Mammoth
     df.loc[df["team_id"] == 53, ["team_id", "team"]] = [68, "UTA"]
@@ -58,7 +70,7 @@ def main() -> None:
     df["is_playoffs"] = 0
     
     # Add playoffs to the df
-    df = pd.concat([df, playoff_df], ignore_index=True)
+    df = pd.concat([df, playoff_df, playoff_hist_df], ignore_index=True)
     
     # Uncomment this filter when not training
     df = df[df["season"] == 20252026].copy()

@@ -4,7 +4,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 PLAYER_DATA = ROOT / "data_collection"
 OUT = ROOT / "dashboard_data/latest"
-V5_DATA = ROOT / "model_artifacts_v5/player_latest_v5.parquet"
+V5_DATA = ROOT / "model_artifacts_v6/player_latest_v6.parquet"
 
 def preprocess_data():
     old_pbp_df = pd.read_csv(PLAYER_DATA / "2022-2026_pbp.csv")
@@ -13,6 +13,7 @@ def preprocess_data():
     update_box_df = pd.read_csv(PLAYER_DATA / "update_box.csv")
     playoff_pbp_df = pd.read_csv(PLAYER_DATA / "playoff_pbp.csv")
     playoff_box_df = pd.read_csv(PLAYER_DATA / "playoff_box.csv")
+    ## add historical playoffs
     
     old_df = pd.merge(
         old_box_df, old_pbp_df,
@@ -52,8 +53,8 @@ def preprocess_data():
 
 
     v5_df = pd.read_parquet(V5_DATA)
-    v5_df.to_parquet(OUT / "player_latest_v5.parquet", index=False)
-    print(f"Copied {len(v5_df)} rows from player_latest_v5.parquet to player_latest_v5.parquet")
+    v5_df.to_parquet(OUT / "player_latest_v6.parquet", index=False)
+    print(f"Copied {len(v5_df)} rows from player_latest_v6.parquet to player_latest_v6.parquet")
 
     try:
         todays_games = pd.read_csv(ROOT / "data_collection/todays_games.csv")
