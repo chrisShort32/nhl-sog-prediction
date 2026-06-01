@@ -244,6 +244,8 @@ def main() -> None:
     
     today_str = datetime.now().strftime("%Y%m%d")
     out_path = f"{OUT}/suggested_bets_full_{today_str}.csv"
+    bet_date = datetime.now().strftime("%Y-%m-%d")
+    final["bet_date"] = bet_date
     final.to_csv(out_path, index=False)
     
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")

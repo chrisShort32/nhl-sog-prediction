@@ -4,7 +4,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 PLAYER_DATA = ROOT / "data_collection"
 OUT = ROOT / "dashboard_data/latest"
-V5_DATA = ROOT / "model_artifacts_v6/player_latest_v6.parquet"
+V6_DATA = ROOT / "model_artifacts_v6/player_latest_v6.parquet"
 
 def preprocess_data():
     old_pbp_df = pd.read_csv(PLAYER_DATA / "2022-2026_pbp.csv")
@@ -52,9 +52,9 @@ def preprocess_data():
     print(f"Processed {len(df)} rows and saved to processed_player_data.parquet")
 
 
-    v5_df = pd.read_parquet(V5_DATA)
-    v5_df.to_parquet(OUT / "player_latest_v6.parquet", index=False)
-    print(f"Copied {len(v5_df)} rows from player_latest_v6.parquet to player_latest_v6.parquet")
+    v6_df = pd.read_parquet(V6_DATA)
+    v6_df.to_parquet(OUT / "player_latest_v6.parquet", index=False)
+    print(f"Copied {len(v6_df)} rows from player_latest_v6.parquet to player_latest_v6.parquet")
 
     try:
         todays_games = pd.read_csv(ROOT / "data_collection/todays_games.csv")
