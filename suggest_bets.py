@@ -236,7 +236,6 @@ def main() -> None:
     
     final = markets_long.copy()
 
-    # optional: sort for readability
     final = final.sort_values(
         ["game_id", "bet_type", "threshold", "bet_edge", "bet_p"],
         ascending=[True, True, True, False, False]
