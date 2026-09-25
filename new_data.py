@@ -18,8 +18,8 @@ def main() -> None:
     update_pbp_df = pd.read_csv(DATA / "update_pbp.csv")
     playoff_box_df = pd.read_csv(DATA / "playoff_box.csv")
     playoff_pbp_df = pd.read_csv(DATA / "playoff_pbp.csv")
-    playoff_box_hist_df = pd.read_csv(DATA / "playoff_box_2022-2025.csv")
-    playoff_pbp_hist_df = pd.read_csv(DATA / "playoff_pbp_2022-2025.csv")
+    playoff_box_hist_df = pd.read_csv(DATA / "2022-2026_playoff_box.csv")
+    playoff_pbp_hist_df = pd.read_csv(DATA / "2022-2026_playoff_pbp.csv")
 
     # Merge PBP and box
     df = pd.merge(
@@ -73,7 +73,7 @@ def main() -> None:
     df = pd.concat([df, playoff_df, playoff_hist_df], ignore_index=True)
     
     # Uncomment this filter when not training
-    df = df[df["season"] == 20252026].copy()
+    df = df[df["season"] == 20262027].copy()
 
     # Save to parquet
     df.to_parquet(OUT / "player_data.parquet", index=False)
