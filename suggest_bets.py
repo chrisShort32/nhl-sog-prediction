@@ -92,12 +92,13 @@ def main() -> None:
         "value_edge_min": 0.06,
         "value_p_min": 0.50,
         "value_odds_max": 160,
+        "value_odds_min": -110,
 
         # singles
         "single_p_min": 0.53,
         "single_odds_min": -150,
-        "single_odds_max": 160,
-        "single_edge_min": 0,
+        "single_odds_max": -110,
+        "single_edge_min": 0.06,
 
         # parlay fodder = very high p, price not too insane
         "parlay_p_min": 0.65,          
@@ -105,10 +106,10 @@ def main() -> None:
         "parlay_odds_max": 100,
 
         # under
-        "under_edge_min": 0,          
+        "under_edge_min": 0.06,          
         "under_p_under_min": 0.53,
         "under_odds_min": -150,
-        "under_odds_max": 160,
+        "under_odds_max": 130,
 
         # avoid = no action (used when lines are bad / model is unsure)
         "avoid_over_edge_max": -0.12,     # over is meaningfully overpriced
@@ -166,6 +167,7 @@ def main() -> None:
     is_value = (
         (markets_long["edge_over"] >= RULES["value_edge_min"]) &
         (markets_long["p_over"] >= RULES["value_p_min"]) &
+        (markets_long["odds_over"] >= RULES["value_odds_min"]) &
         (markets_long["odds_over"] <= RULES["value_odds_max"])
     )
 
